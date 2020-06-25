@@ -21,14 +21,20 @@ pageMenu = page_soup.findAll("li", {"class":"secondary-topmenu__submenu-item"})
 
 basePage = "https://www.orientering.se/"
 for item in pageMenu:
-    webPage = basePage + item.a["href"] + "manadsvinnare/" # some cities uses "vinstdragning/" as extension
     # TODO: Add check if page exists or if it should be something else at the end..
     try:
+        webPage = basePage + item.a["href"] + "manadsvinnare/" # some cities uses "vinstdragning/" as extension
         r = requests.get(webPage)
         r.raise_for_status()
     except HTTPError:
-        print('Could not download page')
-    else:
-        print(r.url, 'downloaded successfully')
-        hittaut.main(webPage)
+        try: 
+            webPage = basePage + item.a["href"] + "vinstdragning/"
+            r = requests.get(webPage)
+            r.raise_for_status()
+        except HTTPError:
+            print(item)
+            print('Could not download page')
+            continue
+    print(r.url, 'downloaded successfully')
+    hittaut.main(webPage)
     
