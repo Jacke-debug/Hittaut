@@ -54,17 +54,27 @@ def main(my_url):
     # html parsing
     page_soup = soup(page_html, "html.parser")
 
-    # grabs each product
-    containers = page_soup.findAll("div", {"class":"rich-text"})
-    if containers is not None:
-        dates = []
-        for container in containers:
-            if container.ul is not None:
-                for content in container.ul:
-                    dates.append(findDate(content.text))
-        return dates
-    else:
-        return
+    # grabs main text of the page
+    mainText = page_soup.find("div", {"class":"editorial__offset"})
+    #print(mainText) # debugging
+    #print(containers[1]) # debugging
+
+    # grabs all headlines/subtitles
+    headers = mainText.findAll("h2")
+    bodyText = headers[1].find_next("div", {"class":"rich-text"})
+    print(headers) # debugging
+    print(bodyText)
+
+
+    # if containers is not None:
+    #     dates = []
+    #     for container in containers:
+    #         if container.ul is not None:
+    #             for content in container.ul:
+    #                 dates.append(findDate(content.text))
+    #     return dates
+    # else:
+    #     return
 
 
 if __name__ == '__main__': # for testing/debugging
