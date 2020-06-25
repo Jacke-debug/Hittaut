@@ -17,11 +17,11 @@ uClient.close()
 page_soup = soup(page_html, "html.parser")
 
 # grabs each product
-pageMenu = page_soup.findAll("li", {"class":"secondary-topmenu__submenu-item"}) 
+pageMenu = page_soup.find("ul",{"class":"secondary-topmenu__submenu regions"}).findAll("li", {"class":"secondary-topmenu__submenu-item"})
 
 basePage = "https://www.orientering.se/"
 nFail=0
-for item in pageMenu[0:pageMenu.index(pageMenu[0],1)]: # slice where first item is repeated
+for item in pageMenu:
     try:
         webPage = basePage + item.a["href"] + "manadsvinnare/" # some cities uses "vinstdragning/" as extension
         r = requests.get(webPage)
