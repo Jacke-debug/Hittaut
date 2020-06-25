@@ -17,11 +17,11 @@ uClient.close()
 page_soup = soup(page_html, "html.parser")
 
 # grabs each product
-pageMenu = page_soup.findAll("li", {"class":"secondary-topmenu__submenu-item"})
+pageMenu = page_soup.findAll("li", {"class":"secondary-topmenu__submenu-item"}) 
 
 basePage = "https://www.orientering.se/"
-for item in pageMenu:
-    # TODO: Add check if page exists or if it should be something else at the end..
+nFail=0
+for item in pageMenu[0:pageMenu.index(pageMenu[0],1)]: # slice where first item is repeated
     try:
         webPage = basePage + item.a["href"] + "manadsvinnare/" # some cities uses "vinstdragning/" as extension
         r = requests.get(webPage)
@@ -34,7 +34,9 @@ for item in pageMenu:
         except HTTPError:
             print(item)
             print('Could not download page')
+            nFail+=1
             continue
     print(r.url, 'downloaded successfully')
-    hittaut.main(webPage)
-    
+    #hittaut.main(webPage)
+
+print('Failed: ', nFail,'/',len(pageMenu))
