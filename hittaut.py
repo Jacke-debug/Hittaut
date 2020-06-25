@@ -66,3 +66,11 @@ def main(my_url):
     else:
         return
 
+
+if __name__ == '__main__': # for testing/debugging
+    #webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/manadsvinnare/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/manadsvinnare/'
+    #https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/vinstdragning/
+    #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/manadsvinnare/
+
+    main(webPage)
