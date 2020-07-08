@@ -62,19 +62,22 @@ def main(my_url):
     # grabs all headlines/subtitles
     headers = mainText.findAll("h2")
     bodyText = headers[1].find_next("div", {"class":"rich-text"})
-    print(headers) # debugging
-    print(bodyText)
+    #print(headers) # debugging
+    #print(bodyText)
 
+    # list of words to look for
+    keywordlist = ['vinstdragning', 'dragningar']
 
-    # if containers is not None:
-    #     dates = []
-    #     for container in containers:
-    #         if container.ul is not None:
-    #             for content in container.ul:
-    #                 dates.append(findDate(content.text))
-    #     return dates
-    # else:
-    #     return
+    if headers is not None:
+        for header in headers:
+            if any(word in header.string.lower() for word in keywordlist):
+                print(header.string,True)
+                # pass corresponding bodyText to method for finding dates
+            else:
+                print(header.string,False)
+        #return dates
+    else:
+        return
 
 
 if __name__ == '__main__': # for testing/debugging
