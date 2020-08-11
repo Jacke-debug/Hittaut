@@ -5,6 +5,7 @@ import datetime
 
 def findDate(winnerDatesStr):
     winnerDatesStr = winnerDatesStr.lower()
+    print(monthTranslate(winnerDatesStr))
     # # assumes month to be written as a word
     # month = monthParser(winnerDatesStr)
     # print(winnerDatesStr)
@@ -42,6 +43,13 @@ def monthParser(winnerDatesStr):
         month = 9
     return month
 
+def monthTranslate(textBody):
+    translated_textBody = textBody.lower()
+    monthDictionary = {'maj':'may','juni':'june','juli':'july','augusti':'august','oktober':'october'} #april,september,november,december
+    for k, v in monthDictionary.items():
+        translated_textBody=translated_textBody.replace(k,v)
+    return translated_textBody
+
 def main(my_url): 
     # opening up connection, grabbing the page
     try:
@@ -77,7 +85,7 @@ def main(my_url):
                     print('>>>',header.string)
                     # pass corresponding bodyText to method for finding dates
                     if header.find_next("div", {"class":"rich-text"}) is not None:
-                        #print(header.find_next("div", {"class":"rich-text"}).get_text())
+                        print(header.find_next("div", {"class":"rich-text"}).get_text())
                         dates = findDate(header.find_next("div", {"class":"rich-text"}).get_text())
                 else:
                     print('---',header.string)
