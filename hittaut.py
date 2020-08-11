@@ -5,28 +5,28 @@ import datetime
 
 def findDate(winnerDatesStr):
     winnerDatesStr = winnerDatesStr.lower()
-    # assumes month to be written as a word
-    month = monthParser(winnerDatesStr)
-    print(winnerDatesStr)
-    # extract numbers from the string
-    numbers = [int(s) for s in str.split(winnerDatesStr) if s.isdigit()]
-    if len(numbers) == 1:
-        # use the one number as a date
-        date = numbers[0]
-        month = 1
-    else:
-        # string contains more than one number
-        # may be a numbering of the dates i.e. 1. 2. 3.. 
-        # or that the month is written with a number
-        # or possibly both..
-        date = 1
-        if month == 0:
-            # month is written as a number not a word
-            # do something clever
-            month = 1
-        pass
-    x = datetime.datetime(2020, month, date)
-    return x
+    # # assumes month to be written as a word
+    # month = monthParser(winnerDatesStr)
+    # print(winnerDatesStr)
+    # # extract numbers from the string
+    # numbers = [int(s) for s in str.split(winnerDatesStr) if s.isdigit()]
+    # if len(numbers) == 1:
+    #     # use the one number as a date
+    #     date = numbers[0]
+    #     month = 1
+    # else:
+    #     # string contains more than one number
+    #     # may be a numbering of the dates i.e. 1. 2. 3.. 
+    #     # or that the month is written with a number
+    #     # or possibly both..
+    #     date = 1
+    #     if month == 0:
+    #         # month is written as a number not a word
+    #         # do something clever
+    #         month = 1
+    #     pass
+    # x = datetime.datetime(2020, month, date)
+    # return x
 
 def monthParser(winnerDatesStr):
     month = 0
@@ -61,20 +61,27 @@ def main(my_url):
 
     # grabs all headlines/subtitles
     headers = mainText.findAll("h2")
-    bodyText = headers[1].find_next("div", {"class":"rich-text"})
+
+    #bodyText = headers[1].find_next("div", {"class":"rich-text"})
     #print(headers) # debugging
     #print(bodyText)
 
     # list of words to look for
-    keywordlist = ['vinstdragning', 'dragningar']
+    keywordlist = ['vinstdragning', 'dragningar','utlottning']
 
     if headers is not None:
+        index=0
         for header in headers:
-            if any(word in header.string.lower() for word in keywordlist):
-                print(header.string,True)
-                # pass corresponding bodyText to method for finding dates
-            else:
-                print(header.string,False)
+            if header.string is not None:
+                if any(word in header.string.lower() for word in keywordlist):
+                    print('>>>',header.string)
+                    # pass corresponding bodyText to method for finding dates
+                    if header.find_next("div", {"class":"rich-text"}) is not None:
+                        #print(header.find_next("div", {"class":"rich-text"}).get_text())
+                        dates = findDate(header.find_next("div", {"class":"rich-text"}).get_text())
+                else:
+                    print('---',header.string)
+            index = index + 1
         #return dates
     else:
         return
