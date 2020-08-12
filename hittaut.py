@@ -1,13 +1,16 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import datetime
+import dateutil.parser as dparser
 
 
 def findDate(winnerDatesStr):
     winnerDatesStr = winnerDatesStr.lower()
-    print(monthTranslate(winnerDatesStr))
+    #winnerDatesStr = monthTranslate(winnerDatesStr))
+    x=dparser.parse(winnerDatesStr,fuzzy=True)
+
     # # assumes month to be written as a word
-    # month = monthParser(winnerDatesStr)
+    #month = monthParser(winnerDatesStr)
     # print(winnerDatesStr)
     # # extract numbers from the string
     # numbers = [int(s) for s in str.split(winnerDatesStr) if s.isdigit()]
@@ -27,7 +30,7 @@ def findDate(winnerDatesStr):
     #         month = 1
     #     pass
     # x = datetime.datetime(2020, month, date)
-    # return x
+    return x
 
 def monthParser(winnerDatesStr):
     month = 0

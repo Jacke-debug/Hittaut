@@ -37,6 +37,6 @@ for item in pageMenu:
             nFail+=1
             continue
     print(r.url, 'downloaded successfully')
-    #hittaut.main(webPage)
+    hittaut.main(webPage)
 
 print('Failed: ', nFail,'/',len(pageMenu))
