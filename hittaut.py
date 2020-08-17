@@ -5,9 +5,24 @@ import dateutil.parser as dparser
 
 
 def findDate(winnerDatesStr):
-    winnerDatesStr = winnerDatesStr.lower()
-    #winnerDatesStr = monthTranslate(winnerDatesStr))
-    x=dparser.parse(winnerDatesStr,fuzzy=True)
+    words = winnerDatesStr.lower().split(' ')
+    #months = ['maj','juni','juli','augusti','september','oktober','november','december']
+    dates = []
+    lastWord="+"
+    for word in words:
+        monthNum = monthParser(word)
+        print(word,"---",monthNum)
+        if monthNum != 0:
+            monStr="-"
+            if lastWord.isdigit():
+                monStr=lastWord
+            monStr = monStr + "/" + str(monthNum)
+            dates.append(monStr)
+        lastWord=word
+
+    # winnerDatesStr = winnerDatesStr.lower()
+    # winnerDatesStr = monthTranslate(winnerDatesStr)
+    # x=dparser.parse("Datum då månadsvinnare utses: vinstdragningen 29 may",fuzzy=True)
 
     # # assumes month to be written as a word
     #month = monthParser(winnerDatesStr)
@@ -30,20 +45,26 @@ def findDate(winnerDatesStr):
     #         month = 1
     #     pass
     # x = datetime.datetime(2020, month, date)
-    return x
+    return dates
 
-def monthParser(winnerDatesStr):
+def monthParser(word):
     month = 0
-    if "maj" in winnerDatesStr:
+    if word == "maj":
         month = 5
-    elif "juni" in winnerDatesStr:
+    elif word in ["juni","jun"]:
         month = 6
-    elif "juli" in winnerDatesStr:
+    elif word in ["juli","jul"]:
         month = 7
-    elif "augusti" in winnerDatesStr:
+    elif word in ["augusti","aug"]:
         month = 8
-    elif "september" in winnerDatesStr:
+    elif word in ["september","sep"]:
         month = 9
+    elif word in ["oktober","okt"]:
+        month = 10
+    elif word in ["november","nov"]:
+        month = 11
+    elif word in ["december","dec"]:
+        month = 12
     return month
 
 def monthTranslate(textBody):
@@ -88,8 +109,10 @@ def main(my_url):
                     print('>>>',header.string)
                     # pass corresponding bodyText to method for finding dates
                     if header.find_next("div", {"class":"rich-text"}) is not None:
-                        print(header.find_next("div", {"class":"rich-text"}).get_text())
-                        dates = findDate(header.find_next("div", {"class":"rich-text"}).get_text())
+                        textMass = header.find_next("div", {"class":"rich-text"}).get_text(' ')
+                        print(textMass)
+                        dates = findDate(textMass)
+                        print(dates)
                 else:
                     print('---',header.string)
             index = index + 1
