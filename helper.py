@@ -54,9 +54,6 @@ for item in pageMenu:
 print('Loaded pages: ', nSuccessful,'/',len(pageMenu))
 print('Non-empty date sets: ', len(pageMenu)-nEmpty,'/',len(pageMenu))
 
-try: 
-    filename=dictsToExcel.main(listOfDicts)
-    print('Successully created: ',filename)
-except:
-    print('<<Failed to save data>>')
-    print(listOfDicts)
+
+filename=dictsToExcel.main(listOfDicts)
+print('Successully created: ',filename)
