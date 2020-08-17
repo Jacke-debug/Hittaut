@@ -2,6 +2,7 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import datetime
 import hittaut
+import dictsToExcel
 import requests
 from requests.exceptions import HTTPError
 
@@ -53,4 +54,9 @@ for item in pageMenu:
 print('Loaded pages: ', nSuccessful,'/',len(pageMenu))
 print('Non-empty date sets: ', len(pageMenu)-nEmpty,'/',len(pageMenu))
 
-print(listOfDicts)
+try: 
+    filename=dictsToExcel.main(listOfDicts)
+    print('Successully created: ',filename)
+except:
+    print('<<Failed to save data>>')
+    print(listOfDicts)
