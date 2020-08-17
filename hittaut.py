@@ -7,17 +7,17 @@ import dateutil.parser as dparser
 def findDate(winnerDatesStr):
     words = winnerDatesStr.lower().split(' ')
     #months = ['maj','juni','juli','augusti','september','oktober','november','december']
-    dates = []
+    dates = set()
     lastWord="+"
     for word in words:
         monthNum = monthParser(word)
-        print(word,"---",monthNum)
+        #print(word,"---",monthNum)
         if monthNum != 0:
             monStr="-"
             if lastWord.isdigit():
                 monStr=lastWord
             monStr = monStr + "/" + str(monthNum)
-            dates.append(monStr)
+            dates.add(monStr)
         lastWord=word
 
     # winnerDatesStr = winnerDatesStr.lower()
@@ -98,27 +98,35 @@ def main(my_url):
     #print(headers) # debugging
     #print(bodyText)
 
-    # list of words to look for
-    keywordlist = ['vinstdragning', 'dragningar','utlottning']
+# look for header containing keyword
 
-    if headers is not None:
-        index=0
-        for header in headers:
-            if header.string is not None:
-                if any(word in header.string.lower() for word in keywordlist):
-                    print('>>>',header.string)
-                    # pass corresponding bodyText to method for finding dates
-                    if header.find_next("div", {"class":"rich-text"}) is not None:
-                        textMass = header.find_next("div", {"class":"rich-text"}).get_text(' ')
-                        print(textMass)
-                        dates = findDate(textMass)
-                        print(dates)
-                else:
-                    print('---',header.string)
-            index = index + 1
-        #return dates
-    else:
-        return
+    # list of words to look for
+    # keywordlist = ['vinstdragning', 'dragningar','utlottning']
+
+    # if headers is not None:
+    #     index=0
+    #     for header in headers:
+    #         if header.string is not None:
+    #             if any(word in header.string.lower() for word in keywordlist):
+    #                 print('>>>',header.string)
+    #                 # pass corresponding bodyText to method for finding dates
+    #                 if header.find_next("div", {"class":"rich-text"}) is not None:
+    #                     textMass = header.find_next("div", {"class":"rich-text"}).get_text(' ')
+    #                     print(textMass)
+    #                     dates = findDate(textMass)
+    #                     print(dates)
+    #             else:
+    #                 print('---',header.string)
+    #         index = index + 1
+    #     #return dates
+    # else:
+    #     return
+    
+# brute force method; extracts all dates on the page
+    mainTextasText=mainText.get_text(' ')
+    dates = findDate(mainTextasText)
+    print(dates)
+
 
 
 if __name__ == '__main__': # for testing/debugging
