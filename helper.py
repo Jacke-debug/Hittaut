@@ -39,4 +39,4 @@ for item in pageMenu:
     print(r.url, 'downloaded successfully')
     hittaut.main(webPage)
 
-print('Failed: ', nFail,'/',len(pageMenu))
+print('Loaded pages: ', nFail,'/',len(pageMenu))

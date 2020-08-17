@@ -91,14 +91,10 @@ def main(my_url):
     #print(mainText) # debugging
     #print(containers[1]) # debugging
 
-    # grabs all headlines/subtitles
-    headers = mainText.findAll("h2")
-
-    #bodyText = headers[1].find_next("div", {"class":"rich-text"})
-    #print(headers) # debugging
-    #print(bodyText)
-
 # look for header containing keyword
+
+    # # grabs all headlines/subtitles
+    # headers = mainText.findAll("h2")
 
     # list of words to look for
     # keywordlist = ['vinstdragning', 'dragningar','utlottning']
@@ -127,6 +123,9 @@ def main(my_url):
     dates = findDate(mainTextasText)
     print(dates)
 
+# get name ("ort")
+    ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
+    print(ort)
 
 
 if __name__ == '__main__': # for testing/debugging
