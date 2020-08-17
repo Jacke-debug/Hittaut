@@ -121,12 +121,16 @@ def main(my_url):
 # brute force method; extracts all dates on the page
     mainTextasText=mainText.get_text(' ')
     dates = findDate(mainTextasText)
-    print(dates)
+    #print(dates)
 
 # get name ("ort")
     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
-    print(ort)
+    #print(ort)
 
+# create dictionary
+    hittautDict = {"name":ort,"draws":dates}
+
+    return hittautDict
 
 if __name__ == '__main__': # for testing/debugging
     #webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/manadsvinnare/'
