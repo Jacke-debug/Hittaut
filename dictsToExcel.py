@@ -2,17 +2,19 @@ from xlsxwriter import Workbook
 
 def main(ortList):
 
-    ordered_list=["name","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Namn","Datum"]
+    ordered_list=["ort","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
+    header_names=["Namn","Datum","Antal","Dragningar"]
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")
-    ws=wb.add_worksheet("Dragningar") #or leave it blank, default name is "Sheet 1"
+    ws=wb.add_worksheet("Information") #or leave it blank, default name is "Sheet 1"
 
     first_row=0
     for header in ordered_list:
         col=ordered_list.index(header) 
         ws.write(first_row,col,header_names[col]) 
+
+    ws.set_column(1,1,16)
 
     row=1
     for ort in ortList:
@@ -28,7 +30,8 @@ def main(ortList):
 
 if __name__ == '__main__': # for testing/debugging
 
-    testList = [{'name': 'Aröd', 'draws': {'7/8','5/5','9/9'}},
-    {'name': 'kode', 'draws': set()}]
+    testList = [{'ort': 'Aröd', 'draws': {'7/8','5/5','9/9'}},
+    {'ort': 'kode', 'draws': set()},
+    {'ort': 'Kungälv', 'dates': '10 Apr - 11 Oct', 'nCheckpts': '60', 'draws': {'-/8', '-/5', '-/10'}}]
 
     main(testList)
