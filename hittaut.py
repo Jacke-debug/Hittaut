@@ -137,21 +137,42 @@ def main(ort_url):
     
 # brute force method; extracts all dates on the page
     mainTextasText=mainText.get_text(' ')
-    dates = findDate(mainTextasText)
+    draws = findDate(mainTextasText)
     #print(dates)
 
-# get name ("ort")
+# get "ort"
     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
     #print(ort)
 
+# get dates "ort", "dates" and "nCheckpts"
+    # opening up connection, grabbing the page
+    uClient = uReq(ort_url)
+    page_html = uClient.read()
+    uClient.close()
+
+    # html parsing
+    page_soup = soup(page_html, "html.parser")
+
+    # get section containing ort+dates. May increase speed.
+    hero_wrapper = page_soup.find("div", {"class":"hero__wrapper"})
+    
+    # ort
+    ort = hero_wrapper.find("h1", {"class":"hittaut-hero__heading"}).get_text().split(' ')[2]
+
+    # dates
+    dates = hero_wrapper.find("li", {"class":"hittaut-hero__dates"}).get_text().strip()
+
+    # nCheckpts
+    nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
+
 # create dictionary
-    hittautDict = {"name":ort,"draws":dates}
+    hittautDict = {"ort":ort, "dates":dates,"nCheckpts":nCheckpts,"draws":draws}
 
     return hittautDict
 
 if __name__ == '__main__': # for testing/debugging
-    #webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
+    # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
     #https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/vinstdragning/
     #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
 
