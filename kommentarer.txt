@@ -1,10 +1,9 @@
-Ibland ../manadsvinnare/
-Ibland ../vinstdragning/
+ToDo
 
-Arvika länkar till Kalmar (av misstag?).
+- Increase readable date formats. 
+    15/7, 30/9 in Varberg https://www.orientering.se//provapaaktiviteter/hittaut/varberg/vinstdragning/
+    2020-07-01, 2020-08-01 etc. in Östersund https://www.orientering.se//provapaaktiviteter/hittaut/ostersund/manadsvinnare/
 
-https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/vinstdragning/
-Mallsida som verkar användas av flera orter.
+- Visual presentation of draws and dates
 
-Katrineholms sida är lurig
-https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/manadsvinnare/
+- Add hyperlink in xlsx sheet
