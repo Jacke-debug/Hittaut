@@ -14,7 +14,7 @@ def main(ortList):
         col=ordered_list.index(header) 
         ws.write(first_row,col,header_names[col]) 
 
-    ws.set_column(0,0,9) # width for ort column
+    ws.set_column(0,0,15) # width for ort column
     ws.set_column(1,1,15) # width for date column
 
     row=1
