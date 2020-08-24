@@ -157,7 +157,7 @@ def main(ort_url):
     hero_wrapper = page_soup.find("div", {"class":"hero__wrapper"})
     
     # ort
-    ort = hero_wrapper.find("h1", {"class":"hittaut-hero__heading"}).get_text().split(' ')[2]
+    ort = hero_wrapper.find("h1", {"class":"hittaut-hero__heading"}).get_text().split(' ',2)[2]
 
     # dates
     dates = hero_wrapper.find("li", {"class":"hittaut-hero__dates"}).get_text().strip()
