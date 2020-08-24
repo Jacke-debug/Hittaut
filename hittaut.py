@@ -1,5 +1,6 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
+import requests
 import datetime
 import dateutil.parser as dparser
 
@@ -74,10 +75,26 @@ def monthTranslate(textBody):
         translated_textBody=translated_textBody.replace(k,v)
     return translated_textBody
 
-def main(my_url): 
+def main(ort_url): 
+    try:
+        vinst_url = ort_url + "manadsvinnare/" 
+        r = requests.get(vinst_url)
+        r.raise_for_status()
+    except:
+        try: 
+            vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
+            r = requests.get(vinst_url)
+            r.raise_for_status()
+        except:
+            print('Could not download page')
+            return
+
+    print(r.url, 'downloaded successfully')
+
+
     # opening up connection, grabbing the page
     try:
-        uClient = uReq(my_url)
+        uClient = uReq(vinst_url)
     except:
         exit
 
@@ -133,9 +150,11 @@ def main(my_url):
     return hittautDict
 
 if __name__ == '__main__': # for testing/debugging
-    #webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/manadsvinnare/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/manadsvinnare/'
+    #webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
     #https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/vinstdragning/
-    #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/manadsvinnare/
+    #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
 
-    main(webPage)
+    result=main(webPage)
+
+    print(result)

@@ -21,37 +21,26 @@ page_soup = soup(page_html, "html.parser")
 pageMenu = page_soup.find("ul",{"class":"secondary-topmenu__submenu regions"}).findAll("li", {"class":"secondary-topmenu__submenu-item"})
 
 basePage = "https://www.orientering.se/"
-nSuccessful=0
-nEmpty=0
+nFailed=0 # number of "failed to load webpage"
+nEmpty=0 # number of "failed to find any dates"
 listOfDicts=list()
 for item in pageMenu:
-    try:
-        webPage = basePage + item.a["href"] + "manadsvinnare/" # some cities uses "vinstdragning/" as extension
-        r = requests.get(webPage)
-        r.raise_for_status()
-    except HTTPError:
-        try: 
-            webPage = basePage + item.a["href"] + "vinstdragning/"
-            r = requests.get(webPage)
-            r.raise_for_status()
-        except HTTPError:
-            print(item)
-            print('Could not download page')
-            continue
-    print(r.url, 'downloaded successfully')
-    nSuccessful+=1
+    webPage = basePage + item.a["href"]
 
     ortDict = hittaut.main(webPage)
-    listOfDicts.append(ortDict)
 
-    if len(ortDict["draws"]) == 0:
-        nEmpty+=1
-        print('No dates found.')
+    if ortDict is None:
+        nFailed+=1
     else:
-        print('Dates (successfully?) extracted')
+        listOfDicts.append(ortDict)
+        if len(ortDict["draws"]) == 0:
+            nEmpty+=1
+            print('No dates found.')
+        else:
+            print('Dates (successfully?) extracted')
         
 
-print('Loaded pages: ', nSuccessful,'/',len(pageMenu))
+print('Loaded pages: ', len(pageMenu)-nFailed,'/',len(pageMenu))
 print('Non-empty date sets: ', len(pageMenu)-nEmpty,'/',len(pageMenu))
 
 
