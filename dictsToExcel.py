@@ -3,7 +3,7 @@ from xlsxwriter import Workbook
 def main(ortList):
 
     ordered_list=["ort","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Namn","Datum","Antal","Dragningar"]
+    header_names=["Ort","Datum","Antal","Dragningar"]
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")
@@ -14,7 +14,8 @@ def main(ortList):
         col=ordered_list.index(header) 
         ws.write(first_row,col,header_names[col]) 
 
-    ws.set_column(1,1,16)
+    ws.set_column(0,0,9) # width for ort column
+    ws.set_column(1,1,15) # width for date column
 
     row=1
     for ort in ortList:
