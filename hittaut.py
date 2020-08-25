@@ -22,7 +22,9 @@ def findDate(winnerDatesStr):
             dates.add(dateNum)
         lastWord=word
 
-    return dates
+    dates_list = sorted(dates)
+
+    return dates_list
 
 def monthParser(word):
     month = 0
