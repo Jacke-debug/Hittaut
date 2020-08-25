@@ -51,7 +51,11 @@ def findDate(winnerDatesStr):
 
 def monthParser(word):
     month = 0
-    if word == "maj":
+    if word in ["mars","mar"]:
+        month = 3
+    elif word in ["april","apr"]:
+        month = 4
+    elif word in ["maj","may"]:
         month = 5
     elif word in ["juni","jun"]:
         month = 6
@@ -61,7 +65,7 @@ def monthParser(word):
         month = 8
     elif word in ["september","sep"]:
         month = 9
-    elif word in ["oktober","okt"]:
+    elif word in ["oktober","okt","oct"]:
         month = 10
     elif word in ["november","nov"]:
         month = 11
@@ -69,7 +73,7 @@ def monthParser(word):
         month = 12
     return month
 
-def monthTranslate(textBody):
+def monthTranslate(textBody): # for use with dateutil.parser
     translated_textBody = textBody.lower()
     monthDictionary = {'maj':'may','juni':'june','juli':'july','augusti':'august','oktober':'october'} #april,september,november,december
     for k, v in monthDictionary.items():
