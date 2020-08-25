@@ -22,31 +22,6 @@ def findDate(winnerDatesStr):
             dates.add(dateNum)
         lastWord=word
 
-    # winnerDatesStr = winnerDatesStr.lower()
-    # winnerDatesStr = monthTranslate(winnerDatesStr)
-    # x=dparser.parse("Datum då månadsvinnare utses: vinstdragningen 29 may",fuzzy=True)
-
-    # # assumes month to be written as a word
-    #month = monthParser(winnerDatesStr)
-    # print(winnerDatesStr)
-    # # extract numbers from the string
-    # numbers = [int(s) for s in str.split(winnerDatesStr) if s.isdigit()]
-    # if len(numbers) == 1:
-    #     # use the one number as a date
-    #     date = numbers[0]
-    #     month = 1
-    # else:
-    #     # string contains more than one number
-    #     # may be a numbering of the dates i.e. 1. 2. 3.. 
-    #     # or that the month is written with a number
-    #     # or possibly both..
-    #     date = 1
-    #     if month == 0:
-    #         # month is written as a number not a word
-    #         # do something clever
-    #         month = 1
-    #     pass
-    # x = datetime.datetime(2020, month, date)
     return dates
 
 def monthParser(word):
