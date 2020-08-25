@@ -1,29 +1,34 @@
 from xlsxwriter import Workbook
 
-def main(ortList):
+def main(listofdicts):
 
-    ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Ort","Länk","Datum","Antal","Dragningar"]
+    #ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
+    header_names=["Ort","Datum","Antal","Dragningar"]
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")
-    ws=wb.add_worksheet("Information") #or leave it blank, default name is "Sheet 1"
+    ws=wb.add_worksheet("Raw info") #or leave it blank, default name is "Sheet 1"
 
     first_row=0
-    for header in ordered_list:
-        col=ordered_list.index(header) 
+    for header in header_names:
+        col=header_names.index(header) 
         ws.write(first_row,col,header_names[col]) 
 
     ws.set_column(0,0,15) # width for ort column
     ws.set_column(1,1,15) # width for date column
 
     row=1
-    for ort in ortList:
-        for _key,_value in ort.items():
-            col=ordered_list.index(_key)
-            if type(_value)==set:
-                _value=str(_value)
-            ws.write(row,col,_value)
+    for dictEntry in listofdicts:
+        ws.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
+        ws.write(row,1, dictEntry['dates'])
+        ws.write(row,2, dictEntry['nCheckpts'])
+        list_str=str(dictEntry['draws'])
+        ws.write(row,3, list_str)
+        # for _key,_value in dictEntry.items():
+        #     col=ordered_list.index(_key)
+        #     if type(_value)==list:
+        #         _value=str(_value)
+        #     ws.write(row,col,_value)
         row+=1 #enter the next row
     wb.close()
 
@@ -31,8 +36,8 @@ def main(ortList):
 
 if __name__ == '__main__': # for testing/debugging
 
-    testList = [{'ort': 'Aröd', 'draws': {'7/8','5/5','9/9'}},
-    {'ort': 'kode', 'draws': set()},
-    {'ort': 'Kungälv', 'dates': '10 Apr - 11 Oct', 'nCheckpts': '60', 'draws': {'-/8', '-/5', '-/10'}}]
+    testList = [{'ort': 'Aröd','url':'arod.se', 'dates':'','nCheckpts': '60','draws': ['7/8','5/5','9/9']},
+    {'ort': 'kode','url':'kode.se', 'draws': list(), 'dates':'','nCheckpts': '60'},
+    {'ort': 'Kungälv', 'url':'kungalv.se', 'dates': '10 Apr - 11 Oct', 'nCheckpts': '60', 'draws': ['-/8', '-/5', '-/10']}]
 
     main(testList)
