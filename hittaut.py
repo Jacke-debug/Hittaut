@@ -14,8 +14,9 @@ def findDate(winnerDatesStr):
         monthNum = monthParser(word) # convert month to number. No match returns 0.
         #print(word,"---",monthNum)
         if monthNum != 0: # if monthNum returned a month, save it in dates together with the previous number
-            if lastWord.isdigit(): # check if the previous word was a number, if so assume that is that is the day
-                dateNum = monthNum*100 + int(lastWord) # save date as a 4 digit number. First 2 digit for month. Last 2 for day.
+            prevNum = ''.join(filter(str.isdigit, lastWord))
+            if prevNum.isdigit(): # check if the previous word was a number, if so assume that is the day. False if prevNum is '' (empty string).
+                dateNum = monthNum*100 + int(prevNum) # save date as a 4 digit number. First 2 digit for month. Last 2 for day.
             else:
                 dateNum = monthNum*100 # Day is 00
             dates.add(dateNum)
