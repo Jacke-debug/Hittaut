@@ -3,7 +3,7 @@ from xlsxwriter import Workbook
 def main(listofdicts):
 
     #ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Ort","Datum","Antal","Dragningar"]
+    header_names=["Ort","Start","Slut","Antal","Dragningar"]
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")
@@ -20,10 +20,11 @@ def main(listofdicts):
     row=1
     for dictEntry in listofdicts:
         ws.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
-        ws.write(row,1, dictEntry['dates'])
-        ws.write(row,2, dictEntry['nCheckpts'])
+        ws.write(row,1, dictEntry['start'])
+        ws.write(row,2, dictEntry['end'])
+        ws.write(row,3, dictEntry['nCheckpts'])
         list_str=str(dictEntry['draws'])
-        ws.write(row,3, list_str)
+        ws.write(row,4, list_str)
         # for _key,_value in dictEntry.items():
         #     col=ordered_list.index(_key)
         #     if type(_value)==list:

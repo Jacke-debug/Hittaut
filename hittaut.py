@@ -5,7 +5,7 @@ import datetime
 import dateutil.parser as dparser
 
 
-def findDate(winnerDatesStr):
+def findDates(winnerDatesStr):
     words = winnerDatesStr.lower().split(' ')
     #months = ['maj','juni','juli','augusti','september','oktober','november','december']
     dates = set()
@@ -119,7 +119,7 @@ def main(ort_url):
     
 # brute force method; extracts all dates on the page
     mainTextasText=mainText.get_text(' ')
-    draws = findDate(mainTextasText)
+    draws = findDates(mainTextasText)
 
 # get "ort"
     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
@@ -141,13 +141,14 @@ def main(ort_url):
     ort = hero_wrapper.find("h1", {"class":"hittaut-hero__heading"}).get_text().split(' ',2)[2]
 
     # dates
-    dates = hero_wrapper.find("li", {"class":"hittaut-hero__dates"}).get_text().strip()
+    datesStr = hero_wrapper.find("li", {"class":"hittaut-hero__dates"}).get_text().strip()
+    dates = findDates(datesStr)
 
     # nCheckpts
     nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
 
 # create dictionary
-    hittautDict = {"ort":ort,"url":ort_url,"dates":dates,"nCheckpts":nCheckpts,"draws":draws}
+    hittautDict = {"ort":ort,"url":ort_url,"start":dates[0],"end":dates[1],"nCheckpts":nCheckpts,"draws":draws}
 
     return hittautDict
 
