@@ -4,7 +4,7 @@ def main(listofdicts):
 
     #ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
     header_names=["Ort","Start","Slut","Antal","Dragningar"]
-    months = ['mars','april','maj','juni','juli','augusti','september','oktober','november','december']
+    months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december']
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")
@@ -19,7 +19,7 @@ def main(listofdicts):
         col=header_names.index(header) 
         ws_raw.write(first_row,col,header_names[col]) 
 
-    col=2
+    col=1
     for month in months:
         ws_vis.write(first_row,col,month)
         col+=1
@@ -28,7 +28,8 @@ def main(listofdicts):
     ws_raw.set_column(4,4,20) # width for draws column
 
     ws_vis.set_column(0,0,15) # width for ort column
-    ws_vis.set_column(2,11,8) # width for month columns
+    #ws_vis.set_column(1,2,4) # width for empty columns
+    ws_vis.set_column(1,12,8) # width for month columns
 
     row=1
     for dictEntry in listofdicts:
@@ -46,6 +47,12 @@ def main(listofdicts):
 
         # visualised worksheet
         ws_vis.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
+        start_month = dictEntry['start'] // 100
+        end_month = dictEntry['end'] // 100
+        cell_format = wb.add_format({'bg_color':'#dd235f'})
+        for monthCol in range(start_month,end_month):
+            ws_vis.write(row, monthCol, '', cell_format)
+
 
         row+=1 #enter the next row
 
