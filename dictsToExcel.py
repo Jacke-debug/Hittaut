@@ -2,8 +2,8 @@ from xlsxwriter import Workbook
 
 def main(ortList):
 
-    ordered_list=["ort","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Ort","Datum","Antal","Dragningar"]
+    ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
+    header_names=["Ort","Länk","Datum","Antal","Dragningar"]
 
     filename="hittaut - dragningar.xlsx"
     wb=Workbook("hittaut - dragningar.xlsx")

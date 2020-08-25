@@ -170,7 +170,7 @@ def main(ort_url):
     nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
 
 # create dictionary
-    hittautDict = {"ort":ort, "dates":dates,"nCheckpts":nCheckpts,"draws":draws}
+    hittautDict = {"ort":ort,"url":ort_url,"dates":dates,"nCheckpts":nCheckpts,"draws":draws}
 
     return hittautDict
 
