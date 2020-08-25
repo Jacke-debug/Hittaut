@@ -11,7 +11,7 @@ def findDate(winnerDatesStr):
     dates = set()
     lastWord="+"
     for word in words:
-        monthNum = monthParser(word) # convert month to number. No match returns 0.
+        monthNum = monthParser(word.replace('.','').replace(',','')) # convert month to number. No match returns 0. Remove '.' and ',' before conversion attempt.
         #print(word,"---",monthNum)
         if monthNum != 0: # if monthNum returned a month, save it in dates together with the previous number
             prevNum = ''.join(filter(str.isdigit, lastWord))
@@ -171,9 +171,9 @@ def main(ort_url):
     return hittautDict
 
 if __name__ == '__main__': # for testing/debugging
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
+    # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
-    #https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/vinstdragning/
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
     #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
 
     result=main(webPage)
