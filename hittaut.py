@@ -11,14 +11,14 @@ def findDate(winnerDatesStr):
     dates = set()
     lastWord="+"
     for word in words:
-        monthNum = monthParser(word)
+        monthNum = monthParser(word) # convert month to number. No match returns 0.
         #print(word,"---",monthNum)
-        if monthNum != 0:
-            monStr="-"
-            if lastWord.isdigit():
-                monStr=lastWord
-            monStr = monStr + "/" + str(monthNum)
-            dates.add(monStr)
+        if monthNum != 0: # if monthNum returned a month, save it in dates together with the previous number
+            if lastWord.isdigit(): # check if the previous word was a number, if so assume that is that is the day
+                dateNum = monthNum*100 + int(lastWord) # save date as a 4 digit number. First 2 digit for month. Last 2 for day.
+            else:
+                dateNum = monthNum*100 # Day is 00
+            dates.add(dateNum)
         lastWord=word
 
     # winnerDatesStr = winnerDatesStr.lower()
@@ -138,7 +138,6 @@ def main(ort_url):
 # brute force method; extracts all dates on the page
     mainTextasText=mainText.get_text(' ')
     draws = findDate(mainTextasText)
-    #print(dates)
 
 # get "ort"
     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
