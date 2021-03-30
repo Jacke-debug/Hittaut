@@ -9,6 +9,7 @@ requests = "*"
 datetime = "*"
 xlsxwriter = "*"
 urllib3 = "*"
+urlopen = "*"
 
 [dev-packages]
 
