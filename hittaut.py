@@ -2,7 +2,7 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import requests
 import datetime
-import dateutil.parser as dparser
+# import dateutil.parser as dparser
 
 
 def findDates(winnerDatesStr):
@@ -57,18 +57,18 @@ def monthTranslate(textBody): # for use with dateutil.parser
         translated_textBody=translated_textBody.replace(k,v)
     return translated_textBody
 
-def main(ort_url): 
+def main(ort_url):
     try:
         vinst_url = ort_url + "manadsvinnare/" 
-        r = requests.get(vinst_url)
+        r = requests.get(vinst_url, verify=False)
         r.raise_for_status()
     except:
         try: 
             vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
-            r = requests.get(vinst_url)
+            r = requests.get(vinst_url, verify=False)
             r.raise_for_status()
         except:
-            print('Could not download page')
+            print('Could not download winner page.',ort_url)
             return
 
     print(r.url, 'downloaded successfully')
@@ -78,7 +78,7 @@ def main(ort_url):
     try:
         uClient = uReq(vinst_url)
     except:
-        exit
+        return
 
     page_html = uClient.read()
     uClient.close()
@@ -145,7 +145,10 @@ def main(ort_url):
     dates = findDates(datesStr)
 
     # nCheckpts
-    nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
+    try:
+        nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
+    except:
+        nCheckpts = -1
 
 # create dictionary
     hittautDict = {"ort":ort,"url":ort_url,"start":dates[0],"end":dates[1],"nCheckpts":nCheckpts,"draws":draws}
