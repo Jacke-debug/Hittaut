@@ -88,14 +88,11 @@ def column_from_date(datenumber,colummns_per_month):
     # datenumber: last two digits for day, first two (or one) for month
     month = datenumber // 100
     day = datenumber % 100
-    print('day',day)
     day_col = math.ceil(colummns_per_month*(day/30))
-    print('day_col',day_col)
     if day_col>colummns_per_month:
         day_col=colummns_per_month
     elif day_col<1:
         day_col=1
-    print('day_col corr',day_col)
     colnumber = (month-1)*colummns_per_month + day_col
     return colnumber
 
