@@ -58,74 +58,9 @@ def monthTranslate(textBody): # for use with dateutil.parser
     return translated_textBody
 
 def main(ort_url):
-    try:
-        vinst_url = ort_url + "manadsvinnare/" 
-        r = requests.get(vinst_url, verify=False)
-        r.raise_for_status()
-    except:
-        try: 
-            vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
-            r = requests.get(vinst_url, verify=False)
-            r.raise_for_status()
-        except:
-            print('Could not download winner page.',ort_url)
-            return
+    print(ort_url)
 
-    print(r.url, 'downloaded successfully')
-
-
-    # opening up connection, grabbing the page
-    try:
-        uClient = uReq(vinst_url)
-    except:
-        return
-
-    page_html = uClient.read()
-    uClient.close()
-    # html parsing
-    page_soup = soup(page_html, "html.parser")
-
-    # grabs main text of the page
-    mainText = page_soup.find("div", {"class":"editorial__offset"})
-    #print(mainText) # debugging
-    #print(containers[1]) # debugging
-
-# look for header containing keyword
-
-    # # grabs all headlines/subtitles
-    # headers = mainText.findAll("h2")
-
-    # list of words to look for
-    # keywordlist = ['vinstdragning', 'dragningar','utlottning']
-
-    # if headers is not None:
-    #     index=0
-    #     for header in headers:
-    #         if header.string is not None:
-    #             if any(word in header.string.lower() for word in keywordlist):
-    #                 print('>>>',header.string)
-    #                 # pass corresponding bodyText to method for finding dates
-    #                 if header.find_next("div", {"class":"rich-text"}) is not None:
-    #                     textMass = header.find_next("div", {"class":"rich-text"}).get_text(' ')
-    #                     print(textMass)
-    #                     dates = findDate(textMass)
-    #                     print(dates)
-    #             else:
-    #                 print('---',header.string)
-    #         index = index + 1
-    #     #return dates
-    # else:
-    #     return
-    
-# brute force method; extracts all dates on the page
-    mainTextasText=mainText.get_text(' ')
-    draws = findDates(mainTextasText)
-
-# get "ort"
-    ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
-    #print(ort)
-
-# get dates "ort", "dates" and "nCheckpts"
+## get "ort", "dates" and "nCheckpts"
     # opening up connection, grabbing the page
     uClient = uReq(ort_url)
     page_html = uClient.read()
@@ -155,6 +90,73 @@ def main(ort_url):
     except:
         nCheckpts = -1
 
+## download winner page
+    try:
+        vinst_url = ort_url + "manadsvinnare/" 
+        r = requests.get(vinst_url, verify=False)
+        r.raise_for_status()
+    except:
+        try: 
+            vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
+            r = requests.get(vinst_url, verify=False)
+            r.raise_for_status()
+        except:
+            print('Could not download winner page.')
+    # print(r.url, 'downloaded successfully')
+
+
+    # opening up connection, grabbing the paged
+    try:
+        uClient = uReq(vinst_url)
+        page_html = uClient.read()
+        uClient.close()
+        # html parsing
+        page_soup = soup(page_html, "html.parser")
+
+        # grabs main text of the page
+        mainText = page_soup.find("div", {"class":"editorial__offset"})
+        #print(mainText) # debugging
+        #print(containers[1]) # debugging
+
+        # brute force method; extracts all dates on the page
+        mainTextasText=mainText.get_text(' ')
+        draws = findDates(mainTextasText)
+
+    # # get "ort"
+    #     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
+    #     #print(ort)
+
+    # look for header containing keyword
+
+        # # grabs all headlines/subtitles
+        # headers = mainText.findAll("h2")
+
+        # list of words to look for
+        # keywordlist = ['vinstdragning', 'dragningar','utlottning']
+
+        # if headers is not None:
+        #     index=0
+        #     for header in headers:
+        #         if header.string is not None:
+        #             if any(word in header.string.lower() for word in keywordlist):
+        #                 print('>>>',header.string)
+        #                 # pass corresponding bodyText to method for finding dates
+        #                 if header.find_next("div", {"class":"rich-text"}) is not None:
+        #                     textMass = header.find_next("div", {"class":"rich-text"}).get_text(' ')
+        #                     print(textMass)
+        #                     dates = findDate(textMass)
+        #                     print(dates)
+        #             else:
+        #                 print('---',header.string)
+        #         index = index + 1
+        #     #return dates
+        # else:
+        #     return
+
+    except:
+        # if not able to get the webpage for draws, just set draws to empty list
+        draws = []
+
 # create dictionary
     hittautDict = {"ort":ort,"url":ort_url,"start":dates[0],"end":dates[1],"nCheckpts":nCheckpts,"draws":draws}
 
@@ -163,7 +165,8 @@ def main(ort_url):
 if __name__ == '__main__': # for testing/debugging
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
+    # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/skane/'
     #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
 
     result=main(webPage)
