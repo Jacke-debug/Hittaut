@@ -146,7 +146,12 @@ def main(ort_url):
 
     # nCheckpts
     try:
-        nCheckpts = page_soup.find("ul", {"class":"toplist"}).find("span", {"class":"count"}).get_text()
+        toplist = page_soup.find("ul", {"class":"toplist"})
+        leader = toplist.find("span", {"class":"name"}).get_text()
+        nCheckpts = int(toplist.find("span", {"class":"count"}).get_text())
+        # set nChekcpts to -1 if the toplist is just the default one
+        if leader == 'Erik Segersäll' & nCheckpts == 87:
+            nCheckpts = -1
     except:
         nCheckpts = -1
 
