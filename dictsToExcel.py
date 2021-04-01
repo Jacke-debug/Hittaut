@@ -1,4 +1,5 @@
 from xlsxwriter import Workbook
+import math
 
 def main(listofdicts):
 
@@ -60,7 +61,7 @@ def main(listofdicts):
         # cfm_off = wb.add_format({'bg_color':''})
         cfm_on_mon = wb.add_format({'bg_color':'#dd235f','font_color':'#FFFFFF','left':1})
         cfm_off_mon = wb.add_format({'left':1})
-        for col in range(1,12*colummns_per_month):
+        for col in range(1,12*colummns_per_month+1):
             if col in vinst_cols:
                 text = 'V'
             else:
@@ -73,6 +74,8 @@ def main(listofdicts):
             else:
                 if (col-1) % colummns_per_month == 0:
                     ws_vis.write(row, col, text, cfm_off_mon)
+                else:
+                    ws_vis.write(row, col, text)
 
 
         row+=1 #enter the next row
@@ -85,11 +88,14 @@ def column_from_date(datenumber,colummns_per_month):
     # datenumber: last two digits for day, first two (or one) for month
     month = datenumber // 100
     day = datenumber % 100
-    day_col = int(colummns_per_month*(day/30))
-    if day_col>30:
-        day_col=30
+    print('day',day)
+    day_col = math.ceil(colummns_per_month*(day/30))
+    print('day_col',day_col)
+    if day_col>colummns_per_month:
+        day_col=colummns_per_month
     elif day_col<1:
         day_col=1
+    print('day_col corr',day_col)
     colnumber = (month-1)*colummns_per_month + day_col
     return colnumber
 
@@ -99,6 +105,7 @@ if __name__ == '__main__': # for testing/debugging
     # {'ort': 'kode','url':'kode.se', 'draws': list(), 'dates':'','nCheckpts': '60'},
     # {'ort': 'Kungälv', 'url':'kungalv.se', 'dates': '10 Apr - 11 Oct', 'nCheckpts': '60', 'draws': ['-/8', '-/5', '-/10']}]
 
-    testList = [{'ort': 'Kalmar', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/', 'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [815,1030]}]
+    testList = [{'ort': 'Kalmar', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/',\
+         'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231]}]
 
     main(testList)
