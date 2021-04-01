@@ -4,7 +4,7 @@ import math
 def main(listofdicts):
 
     #ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Ort","Start","Slut","Antal","Dragningar"]
+    header_names=["Ort","Start","Slut","Antal checkpts","Dragningar"]
     months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december']
 
     filename="hittaut - dragningar.xlsx"
@@ -39,7 +39,10 @@ def main(listofdicts):
         ws_raw.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
         ws_raw.write(row,1, dictEntry['start'])
         ws_raw.write(row,2, dictEntry['end'])
-        ws_raw.write(row,3, dictEntry['nCheckpts'])
+        nCheckpts = dictEntry['nCheckpts']
+        if nCheckpts == -1:
+            nCheckpts = 'okänt'
+        ws_raw.write(row,3, nCheckpts)
         list_str=str(dictEntry['draws'])
         ws_raw.write(row,4, list_str)
         # for _key,_value in dictEntry.items():
