@@ -91,42 +91,20 @@ def main(ort_url):
         nCheckpts = -1
 
 ## download winner page
-    try:
-        vinst_url = ort_url + "manadsvinnare/" 
-        r = requests.get(vinst_url, verify=False)
-        r.raise_for_status()
-    except:
-        try: 
-            vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
-            r = requests.get(vinst_url, verify=False)
-            r.raise_for_status()
-        except:
-            print('Could not download winner page.')
+    # try:
+    #     vinst_url = ort_url + "manadsvinnare/" 
+    #     r = requests.get(vinst_url, verify=False)
+    #     r.raise_for_status()
+    # except:
+    #     try: 
+    #         vinst_url = ort_url + "vinstdragning/" # some cities uses "vinstdragning/" as extension
+    #         r = requests.get(vinst_url, verify=False)
+    #         r.raise_for_status()
+    #     except:
+    #         print('Could not download winner page.')
     # print(r.url, 'downloaded successfully')
 
-
-    # opening up connection, grabbing the paged
-    try:
-        uClient = uReq(vinst_url)
-        page_html = uClient.read()
-        uClient.close()
-        # html parsing
-        page_soup = soup(page_html, "html.parser")
-
-        # grabs main text of the page
-        mainText = page_soup.find("div", {"class":"editorial__offset"})
-        #print(mainText) # debugging
-        #print(containers[1]) # debugging
-
-        # brute force method; extracts all dates on the page
-        mainTextasText=mainText.get_text(' ')
-        draws = findDates(mainTextasText)
-
-    # # get "ort"
-    #     ort=page_soup.find("li", {"class":"hittaut-navigation__item item-1"}).get_text().strip()[10:]
-    #     #print(ort)
-
-    # look for header containing keyword
+ # look for header containing keyword
 
         # # grabs all headlines/subtitles
         # headers = mainText.findAll("h2")
@@ -151,9 +129,34 @@ def main(ort_url):
         #         index = index + 1
         #     #return dates
         # else:
-        #     return
 
+    grab_success = True
+    # opening up connection, grabbing the paged
+    try:
+        vinst_url = ort_url + "manadsvinnare/" 
+        uClient = uReq(vinst_url)
     except:
+        try:
+            vinst_url = ort_url + "vinstdragning/"
+            uClient = uReq(vinst_url)
+        except:
+            grab_success = False
+            
+    if grab_success:
+        page_html = uClient.read()
+        uClient.close()
+        # html parsing
+        page_soup = soup(page_html, "html.parser")
+
+        # grabs main text of the page
+        mainText = page_soup.find("div", {"class":"editorial__offset"})
+        #print(mainText) # debugging
+        #print(containers[1]) # debugging
+
+        # brute force method; extracts all dates on the page
+        mainTextasText=mainText.get_text(' ')
+        draws = findDates(mainTextasText)
+    else:
         # if not able to get the webpage for draws, just set draws to empty list
         draws = []
 
