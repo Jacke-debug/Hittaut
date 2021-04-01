@@ -27,10 +27,10 @@ def main(listofdicts):
         ws_vis.write(first_row,col,month,cfm_mon)
         col+=colummns_per_month
 
-    ws_raw.set_column(0,0,15) # width for ort column
+    ws_raw.set_column(0,0,21.5) # width for ort column
     ws_raw.set_column(4,4,20) # width for draws column
 
-    ws_vis.set_column(0,0,15) # width for ort column
+    ws_vis.set_column(0,0,21.5) # width for ort column
     #ws_vis.set_column(1,2,4) # width for empty columns
     ws_vis.set_column(1,12*colummns_per_month,0.9) # width for month columns
 
@@ -102,7 +102,9 @@ if __name__ == '__main__': # for testing/debugging
     # {'ort': 'kode','url':'kode.se', 'draws': list(), 'dates':'','nCheckpts': '60'},
     # {'ort': 'Kungälv', 'url':'kungalv.se', 'dates': '10 Apr - 11 Oct', 'nCheckpts': '60', 'draws': ['-/8', '-/5', '-/10']}]
 
-    testList = [{'ort': 'Kalmar', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/',\
+    # testList = [{'ort': 'Kalmar', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/',\
+        #  'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231]}]
+    testList = [{'ort': 'Stockholm Upplands Väsby', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/upplandsvasby/',\
          'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231]}]
 
     main(testList)
