@@ -6,12 +6,14 @@ import datetime
 
 
 def findDates(winnerDatesStr):
+    winnerDatesStr = winnerDatesStr.replace('.',' ').replace(',',' ')
     words = winnerDatesStr.lower().split(' ')
     #months = ['maj','juni','juli','augusti','september','oktober','november','december']
     dates = set()
     lastWord="+"
     for word in words:
-        monthNum = monthParser(word.replace('.','').replace(',','')) # convert month to number. No match returns 0. Remove '.' and ',' before conversion attempt.
+        # monthNum = monthParser(word.replace('.','').replace(',','')) # convert month to number. No match returns 0. Remove '.' and ',' before conversion attempt.
+        monthNum = monthParser(word)
         #print(word,"---",monthNum)
         if monthNum != 0: # if monthNum returned a month, save it in dates together with the previous number
             prevNum = ''.join(filter(str.isdigit, lastWord))
@@ -155,6 +157,7 @@ def main(ort_url):
 
         # brute force method; extracts all dates on the page
         mainTextasText=mainText.get_text(' ')
+        print(mainTextasText)
         draws = findDates(mainTextasText)
     else:
         # if not able to get the webpage for draws, just set draws to empty list
@@ -169,8 +172,9 @@ if __name__ == '__main__': # for testing/debugging
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/skane/'
+    # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/skane/'
     #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/goteborg/'
 
     result=main(webPage)
 
