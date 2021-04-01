@@ -22,10 +22,13 @@ def findDates(winnerDatesStr):
             else:
                 dateNum = monthNum*100 # Day is 00
             dates.add(dateNum)
+        elif '/' in word:
+            numbers = word.split('/')
+            if len(numbers)==2 and numbers[0].isdigit() and numbers[1].isdigit():
+                dateNum = int(numbers[1])*100 + int(numbers[0])
+                dates.add(dateNum)
         lastWord=word
-
     dates_list = sorted(dates)
-
     return dates_list
 
 def monthParser(word):
@@ -83,14 +86,18 @@ def main(ort_url):
 
     # nCheckpts
     try:
-        toplist = page_soup.find("ul", {"class":"toplist"})
-        leader = toplist.find("span", {"class":"name"}).get_text()
-        nCheckpts = int(toplist.find("span", {"class":"count"}).get_text())
+        # toplist = page_soup.find("ul", {"class":"toplist"})
+        # leader = toplist.find("span", {"class":"name"}).get_text()
+        # nCheckpts = int(toplist.find("span", {"class":"count"}).get_text())
+        no1intoplist = page_soup.find("ul", {"class":"toplist"}).findAll("li")[1]
+        leader = no1intoplist.find("span", {"class":"name"}).get_text()
+        nCheckpts = int(no1intoplist.find("span", {"class":"count"}).get_text())
         # set nChekcpts to -1 if the toplist is just the default one
-        if leader == 'Erik Segersäll' & nCheckpts == 87:
+        if leader == 'Erik Segersäll' and nCheckpts == 87:
             nCheckpts = -1
     except:
         nCheckpts = -1
+    
 
 ## download winner page
     # try:
@@ -157,7 +164,6 @@ def main(ort_url):
 
         # brute force method; extracts all dates on the page
         mainTextasText=mainText.get_text(' ')
-        print(mainTextasText)
         draws = findDates(mainTextasText)
     else:
         # if not able to get the webpage for draws, just set draws to empty list
@@ -174,7 +180,8 @@ if __name__ == '__main__': # for testing/debugging
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/skane/'
     #https://www.orientering.se//provapaaktiviteter/hittaut/katrineholm/
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/goteborg/'
+    # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/goteborg/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/ale/'
 
     result=main(webPage)
 
