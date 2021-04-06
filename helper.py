@@ -45,12 +45,12 @@ for item in pageMenu:
         print('method',end=' <> ')
         if ortDict["method"] == 0:
             print('brute force')
-            n_heading+=1
         elif ortDict["method"] == -1:
             print('no winners page')
             nFailedVinstsida+=1
-        else:
+        else: #ortDict["method"] == 1:
             print('heading based')
+            n_heading+=1
         print('nCheckpts',end=' <> ')
         if ortDict["nCheckpts"] == -1:
             print('fail')
@@ -58,8 +58,11 @@ for item in pageMenu:
             n_nCheckpts+=1
             print('success?')
 
-# sort on start date
-listOfDicts = sorted(listOfDicts, key=lambda k: k['Start']) 
+try:
+    # sort on start date
+    listOfDicts = sorted(listOfDicts, key=lambda k: k['start']) 
+except Exception as e: 
+    print(e)
 
 total = len(pageMenu)
 loaded = total-nFailed
