@@ -47,6 +47,9 @@ for item in pageMenu:
             n_nCheckpts+=1
             print('success?')
 
+# sort on start date
+listOfDicts = sorted(listOfDicts, key=lambda k: k['Start']) 
+
 total = len(pageMenu)
 loaded = total-nFailed
 
