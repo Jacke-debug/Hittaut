@@ -85,6 +85,7 @@ def main(ort_url):
     else:
         # if not able to get the webpage for draws, just set draws to empty list
         draws = []
+        method = -1
 
 # create dictionary
     hittautDict = {"ort":ort,"url":ort_url,"start":dates[0],"end":dates[1],"nCheckpts":nCheckpts,"draws":draws,"method":method}
@@ -103,11 +104,11 @@ def findDates(mainText):
         draws,clever_extract_success = dates_from_headers(headers_h3)
     
     if clever_extract_success:
-        return draws,'Rubrikbaserat'
+        return draws,1 # 1 for heading based method
     else:
         # brute force method; extracts all dates on the page
         mainTextasText=mainText.get_text(' ')
-        return all_dates_in_text(mainTextasText),'Alla'
+        return all_dates_in_text(mainTextasText),0 # 0 for brute force method
 
 def dates_from_headers(headers):
     dates = []
@@ -200,7 +201,7 @@ def monthTranslate(textBody): # for use with dateutil.parser
 if __name__ == '__main__': # for testing/debugging
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/malmo/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/lulea/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/goteborg/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/karlskrona/'

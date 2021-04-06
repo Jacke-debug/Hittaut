@@ -22,6 +22,7 @@ pageMenu = page_soup.find("ul",{"class":"secondary-topmenu__submenu regions"}).f
 
 basePage = "https://www.orientering.se/"
 nFailed=0 # number of "failed to load webpage"
+nFailedVinstsida=0 # number of "sida saknas" for vinstdragningar
 n_dates=0 # number of "Dates (successfully?) extracted"
 n_heading=0 # number of times dates extracted with heading based method
 n_nCheckpts=0 # number of "nCheckpts (successfully?) extracted"
@@ -42,9 +43,12 @@ for item in pageMenu:
             n_dates+=1
             print('success?')
         print('method',end=' <> ')
-        if ortDict["method"] == 'Alla':
+        if ortDict["method"] == 0:
             print('brute force')
             n_heading+=1
+        elif ortDict["method"] == -1:
+            print('no winners page')
+            nFailedVinstsida+=1
         else:
             print('heading based')
         print('nCheckpts',end=' <> ')
@@ -59,8 +63,10 @@ listOfDicts = sorted(listOfDicts, key=lambda k: k['Start'])
 
 total = len(pageMenu)
 loaded = total-nFailed
+loaded_winner = loaded-nFailedVinstsida
 
-print('Loaded pages: ', loaded,'/',total)
+print('Loaded main pages: ', loaded,'/',total)
+print('Loaded winners pages: ', loaded_winner,'/',loaded)
 print('"dragningar" extracted: ', n_dates,'/',loaded)
 print('Heading based extraction: ', n_heading,'/',loaded)
 print('"nCheckpts" extracted: ', n_nCheckpts,'/',loaded)

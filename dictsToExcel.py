@@ -50,7 +50,12 @@ def main(listofdicts):
         #     if type(_value)==list:
         #         _value=str(_value)
         #     ws.write(row,col,_value)
-        ws_raw.write(row,5, dictEntry['method'])
+        if dictEntry['method']==0:
+            ws_raw.write(row,5, 'Alla')
+        elif dictEntry['method']==1:
+            ws_raw.write(row,5, 'Rubrikbaserad')
+        else: # dictEntry['method']==-1
+            ws_raw.write(row,5, 'Vinstsida saknas')
 
         # visualised worksheet
         ws_vis.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
