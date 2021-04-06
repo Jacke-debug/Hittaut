@@ -96,12 +96,11 @@ def main(ort_url):
 def findDates(mainText):
     #  look for header containing keyword
     # grabs all headlines/subtitles
-    headers_h2 = mainText.findAll("h2")
-    headers_h3 = mainText.findAll("h3")
-
-    draws,clever_extract_success = dates_from_headers(headers_h2)
+    draws,clever_extract_success = dates_from_headers(mainText,"h2")
     if not clever_extract_success:
-        draws,clever_extract_success = dates_from_headers(headers_h3)
+        draws,clever_extract_success = dates_from_headers(mainText,"h3")
+        # if not clever_extract_success:
+        #     draws,clever_extract_success = dates_from_headers(mainText,"p")
     
     if clever_extract_success:
         return draws,1 # 1 for heading based method
@@ -110,26 +109,28 @@ def findDates(mainText):
         mainTextasText=mainText.get_text(' ')
         return all_dates_in_text(mainTextasText),0 # 0 for brute force method
 
-def dates_from_headers(headers):
+def dates_from_headers(mainText,tag):
+    headers = mainText.findAll(tag)
     dates = []
     clever_extract_success = False # if this is False brute force method will be applied
     # list of words to look for
     keywordlist = ['vinstdragning', 'dragningar','utlottning']
+    keywordlist2 = ['priser','vinster']
     if headers is not None:
         for header in headers:
-            if header.string is not None:
-                if any(word in header.string.lower() for word in keywordlist):
-                    # print('>>>',header.string)
+            if header.text is not None:
+                if any(word in header.text.lower() for word in keywordlist):
+                    # print('>>>',header.text)
                     clever_extract_success = True
                     for sib in header.find_next_siblings():
-                        if sib.name=="h2":
+                        if sib.name==tag:
                             break
                         else:
                             dates = dates + all_dates_in_text(sib.get_text(' '))
-                elif 'priser' in header.string.lower():
-                    # print('>>>',header.string)
+                elif any(word in header.text.lower() for word in keywordlist2):
+                    # print('>>>',header.text)
                     for sib in header.find_next_siblings():
-                        if sib.name=="h2":
+                        if sib.name==tag:
                             break
                         else:
                             more_dates = all_dates_in_text(sib.get_text(' '))
@@ -138,7 +139,7 @@ def dates_from_headers(headers):
                                 clever_extract_success = True
                 else:
                     pass
-                    # print('---',header.string)
+                    # print('---',header.text)
     return dates,clever_extract_success
 
 def all_dates_in_text(winnerDatesStr):
@@ -201,7 +202,7 @@ def monthTranslate(textBody): # for use with dateutil.parser
 if __name__ == '__main__': # for testing/debugging
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/kungalv/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/trollhattan/'
-    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/malmo/'
+    webPage='https://www.orientering.se/provapaaktiviteter/hittaut/ale/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/lulea/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/goteborg/'
     # webPage='https://www.orientering.se/provapaaktiviteter/hittaut/karlskrona/'
