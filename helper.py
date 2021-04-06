@@ -23,6 +23,7 @@ pageMenu = page_soup.find("ul",{"class":"secondary-topmenu__submenu regions"}).f
 basePage = "https://www.orientering.se/"
 nFailed=0 # number of "failed to load webpage"
 n_dates=0 # number of "Dates (successfully?) extracted"
+n_heading=0 # number of times dates extracted with heading based method
 n_nCheckpts=0 # number of "nCheckpts (successfully?) extracted"
 listOfDicts=list()
 for item in pageMenu:
@@ -40,6 +41,12 @@ for item in pageMenu:
         else:
             n_dates+=1
             print('success?')
+        print('method',end=' <> ')
+        if ortDict["method"] == 'Alla':
+            print('brute force')
+            n_heading+=1
+        else:
+            print('heading based')
         print('nCheckpts',end=' <> ')
         if ortDict["nCheckpts"] == -1:
             print('fail')
@@ -54,8 +61,9 @@ total = len(pageMenu)
 loaded = total-nFailed
 
 print('Loaded pages: ', loaded,'/',total)
-print('Date sets: ', n_dates,'/',loaded)
-print('nCheckpts sets: ', n_nCheckpts,'/',loaded)
+print('"dragningar" extracted: ', n_dates,'/',loaded)
+print('Heading based extraction: ', n_heading,'/',loaded)
+print('"nCheckpts" extracted: ', n_nCheckpts,'/',loaded)
 
 
 filename=dictsToExcel.main(listOfDicts)

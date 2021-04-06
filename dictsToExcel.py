@@ -4,7 +4,7 @@ import math
 def main(listofdicts):
 
     #ordered_list=["ort","url","dates","nCheckpts","draws"] #list object calls by index but dict object calls items randomly
-    header_names=["Ort","Start","Slut","Antal checkpts","Dragningar"]
+    header_names=["Ort","Start","Slut","Antal checkpts","Vinstdragningar","Metod för extraktion av dragningsdatum"]
     months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december']
 
     filename="hittaut - dragningar.xlsx"
@@ -28,7 +28,7 @@ def main(listofdicts):
         col+=colummns_per_month
 
     ws_raw.set_column(0,0,21.5) # width for ort column
-    ws_raw.set_column(4,4,20) # width for draws column
+    ws_raw.set_column(4,4,35) # width for draws column
 
     ws_vis.set_column(0,0,21.5) # width for ort column
     #ws_vis.set_column(1,2,4) # width for empty columns
@@ -50,6 +50,7 @@ def main(listofdicts):
         #     if type(_value)==list:
         #         _value=str(_value)
         #     ws.write(row,col,_value)
+        ws_raw.write(row,5, dictEntry['method'])
 
         # visualised worksheet
         ws_vis.write_url(row,0, dictEntry['url'], string=dictEntry['ort'])
@@ -108,6 +109,6 @@ if __name__ == '__main__': # for testing/debugging
     # testList = [{'ort': 'Kalmar', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/kalmar/',\
         #  'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231]}]
     testList = [{'ort': 'Stockholm Upplands Väsby', 'url': 'https://www.orientering.se/provapaaktiviteter/hittaut/upplandsvasby/',\
-         'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231]}]
+         'start': 501, 'end': 1030, 'nCheckpts': '130', 'draws': [104,202,303,625,726,827,928,1029,1130,1231],'method':'alla'}]
 
     main(testList)
